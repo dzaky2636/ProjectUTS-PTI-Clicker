@@ -23,3 +23,6 @@ Notes:
 - Buyable akan menyala hijau saat bisa dibeli
 - Gunakan favico untuk memberi icon ke website
 - Gunakan resource icon open-source dan gratis
+
+Ide:
+- Background clicker?
