@@ -164,9 +164,10 @@ const boost = {
     boostCountDownStart: 30,
     boostCountDown: 30,
     boostIncr: 5,
-    onCountdownStart: 10,
-    onCountdown: 10,
-    onMultiplier: 1
+    onCountdownStart: 5,
+    onCountdown: 5,
+    onMultiplier: 1,
+    originalMulValue: 1
 }
 
 setInterval(function(){
@@ -185,6 +186,7 @@ setInterval(function(){
             document.getElementById("boosterDisplay").innerHTML = "Random Booster " + boost.onMultiplier + "x <span class='text-success'>ON</span> (" + boost.onCountdown + "s):";
         }else{
             boost.onCountdown = boost.onCountdownStart;
+            stats.multiplier = boost.originalMulValue;
             stats.multiplier /= boost.onMultiplier;
             boost.boostOn = false;
         }
