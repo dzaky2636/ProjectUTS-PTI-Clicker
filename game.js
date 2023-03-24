@@ -26,7 +26,7 @@ mulIncr = [200, 500, 1000];
 
 // saat klik
 function clicked(){
-    stats.money += (stats.moneyup * stats.multiplier);
+    stats.money += (stats.moneyup * stats.multiplier * boost.onMultiplier);
     document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
     clickAnimation();
 }
@@ -45,7 +45,7 @@ var iClicker = 0;
 function autoClicker(){
     setTimeout(function(){
         clickAnimation();
-        stats.money += (stats.moneyup * stats.multiplier);
+        stats.money += (stats.moneyup * stats.multiplier * boost.onMultiplier);
         iClicker++;
         if(iClicker < stats.autoclicker){
             autoClicker();
@@ -89,7 +89,7 @@ function buyMultiplier(level){
 // animasi klik, digunakan pada klik dan autoclicker
 function clickAnimation(){
     var moneyAnimation = document.createElement("p");
-    moneyAnimation.innerHTML = "+" + (stats.moneyup * stats.multiplier);
+    moneyAnimation.innerHTML = "+" + (stats.moneyup * stats.multiplier * boost.onMultiplier);
     document.getElementById("moneyAnimation").appendChild(moneyAnimation);
     moneyAnimation.classList.add("moneyAnimation");
 }
@@ -189,7 +189,7 @@ setInterval(function(){
             document.getElementById("boosterDisplay").innerHTML = "Random Booster " + boost.onMultiplier + "x <span class='text-success'>ON</span> (" + boost.onCountdown + "s):";
         }else{
             boost.onCountdown = boost.onCountdownStart;
-            stats.multiplier = parseInt(stats.multiplier/boost.onMultiplier);
+            boost.onMultiplier = 1;
             boost.boostOn = false;
         }
     }
@@ -201,7 +201,6 @@ function claimBoost(){
     // dari 2x -> 5x
     // Rumus: Math.floor(Math.random() * (max - min + 1) ) + min;
     boost.onMultiplier = Math.floor(Math.random() * (5 - 2 + 1)) + 2;
-    stats.multiplier *= boost.onMultiplier;
     boost.boostCountDownStart += boost.boostIncr;
     boost.boostCountDown = boost.boostCountDownStart;
 }
