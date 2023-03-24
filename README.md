@@ -2,27 +2,20 @@
 
 To-Do:
 - Halaman Utama (index.html)
-  - Navigation bar (link ke index dan about us)
-  - Fitur Clicker dan Counter
-  - Objek yang di klik
+  
+  Frontend:
+  - Bagian clicker semuanya belum
+
+  Backend:
   - Fitur Upgrades
-  - Fitur Auto Clicker
-  - Fitur Multiplier
-  - Peringatan saat mencoba beli yg masih terkunci
+  - Fitur Prestige
   - Responsive dan compatible di setiap platform
-  - Animasi saat klik dan beli upgrade
 - Halaman About Us (aboutus.html)
-  - Bentuk card
-  - Foto members
-  - Deskripsi member
-  - Referensi yg dipakai
+  - Tinggal disesuaikan ketika project jadi
   
 Notes:
-- Buyable memiliki deskripsi pendek
-- Buyable akan berwarna abu-abu saat dikunci
-- Buyable akan menyala hijau saat bisa dibeli
 - Gunakan favico untuk memberi icon ke website
 - Gunakan resource icon open-source dan gratis
 
 Ide:
-- Background clicker?
+- Effect saat booster?
