@@ -1,51 +1,107 @@
+window.onload = (event) => {
+    redrawButtons();
+};
+
 // Controllers. Kostumisasi game.
 const stats = {
     money: 0,
-    moneyup: 1
+    moneyup: 1,
+    autoclicker: 0,
+    multiplier: 1
 };
 
+    // Cost =  Harga awal
+    // Value = Jumlah yang ditambah ketika dibeli
+    // Incr = Setelah beli, harga naik sesuai ini
 upgradeCost = [10, 20, 30];
 upgradeValue = ["Tahu", "Pizza", "Emas"];
-mulCost = [10, 20, 30];
-mulValue = [2, 3, 4];
-autoClickCost = [10, 20, 30];
-autoClickValue = [1, 2, 4];
 
-for(i = 0; i < 3; i++){
-    document.getElementById("menuUpgrade" + (i + 1)).childNodes[1].innerHTML = "Jual " + upgradeValue[i] + " (Cost: " + upgradeCost[i] + ")";
-    document.getElementById("menuMultiplier" + (i + 1)).childNodes[1].innerHTML = "Multiplier " + mulValue[i] + "x (Cost: " + mulCost[i] + ")";
-    document.getElementById("menuAutoClicker" + (i + 1)).childNodes[1].innerHTML = "Pekerja " + (i + 1) + " [+" + autoClickValue[i] +" cps] (Cost: " + autoClickCost[i] + ")";
+autoClickCost = [50, 200, 500];
+autoClickValue = [1, 2, 5];
+autoClickIncr = [200, 500, 1000];
+
+mulCost = [50, 100, 250];
+mulValue = [2, 3, 4];
+mulIncr = [200, 500, 1000];
+
+// Render ulang harga
+function redrawButtons(){
+    for(i = 0; i < 3; i++){
+        document.getElementById("menuUpgrade" + (i + 1)).childNodes[1].innerHTML = "Jual " + upgradeValue[i] + " (Cost: " + upgradeCost[i] + ")";
+        document.getElementById("menuMultiplier" + (i + 1)).childNodes[1].innerHTML = "Multiplier " + mulValue[i] + "x (Cost: " + mulCost[i] + ")";
+        document.getElementById("menuAutoClicker" + (i + 1)).childNodes[1].innerHTML = "Pekerja L" + (i + 1) + " [+" + autoClickValue[i] +" cps] (Cost: " + autoClickCost[i] + ")";
+    }
 }
 
 // Lakukan ini setiap satu detik
 setInterval(function(){
-    document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
+    if(stats.autoclicker > 0){
+        autoClicker();
+    }
     checkIfLockedUnlocked();
-    stats.money--;
-    console.log(stats.autoClickerLevel);
+    document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
 }, 1000);
 
-// Random booster
+// Random booster, setiap 60 detik
 setInterval(function(){
     // do this
 }, 60000);
 
-// Saat klik
-function clicked(){
-    var moneyAnimation = document.createElement("p");
-    moneyAnimation.innerHTML = "+" + stats.moneyup;
-
-    stats.money += stats.moneyup;
-    document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
-    document.getElementById("moneyAnimation").appendChild(moneyAnimation);
-    moneyAnimation.classList.add("moneyAnimation");
+// autoclicker
+var iClicker = 0;
+function autoClicker(){
+    setTimeout(function(){
+        clickAnimation();
+        stats.money += (stats.moneyup * stats.multiplier);
+        iClicker++;
+        if(iClicker < stats.autoclicker){
+            autoClicker();
+        }else{
+            iClicker = 0;
+            document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
+        }
+    }, 100); // kecepatan animasi
 }
 
-// Beli
-function buyMultiplier(level){
-    if(money >= mulCost[0]){
-
+function buyAutoClicker(level){
+    if(stats.money < autoClickCost[level]){
+        alert("Uang anda tidak cukup! :(");
+    }else{
+        stats.money -= autoClickCost[level];
+        stats.autoclicker += autoClickValue[level];
+        autoClickCost[level] += autoClickIncr[level];
+        redrawButtons();
+        document.getElementById("displayAutoClickerCount").innerHTML = "Auto Clicker (" + stats.autoclicker + " cps)";
     }
+}
+
+function buyMultiplier(level){
+    if(stats.money < mulCost[level]){
+        alert("Uang anda tidak cukup! :(");
+    }else{
+        stats.money -= mulCost[level];
+        if(stats.multiplier == 1){
+            stats.multiplier += mulValue[level] - 1;
+        }else{
+            stats.multiplier += mulValue[level];
+        }
+        mulCost[level] += mulIncr[level];
+        redrawButtons();
+        document.getElementById("displayMultiplierCount").innerHTML = "Multiplier (" + stats.multiplier + "x)";
+    }
+}
+
+function clicked(){
+    stats.money += (stats.moneyup * stats.multiplier);
+    document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
+    clickAnimation();
+}
+
+function clickAnimation(){
+    var moneyAnimation = document.createElement("p");
+    moneyAnimation.innerHTML = "+" + (stats.moneyup * stats.multiplier);
+    document.getElementById("moneyAnimation").appendChild(moneyAnimation);
+    moneyAnimation.classList.add("moneyAnimation");
 }
 
 // Check apa bisa dibeli
