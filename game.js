@@ -42,11 +42,6 @@ setInterval(function(){
     document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
 }, 1000);
 
-// Random booster, setiap 60 detik
-setInterval(function(){
-    // do this
-}, 60000);
-
 // autoclicker
 var iClicker = 0;
 function autoClicker(){
@@ -161,4 +156,48 @@ function checkIfLockedUnlocked(){
     }else if(stats.money < upgradeCost[2]){
         up3.setAttribute("class", "btn btn-secondary col-2");
     }
-}   
+}
+
+// Random booster, setiap detik dibawah
+const boost = {
+    boostOn: false,
+    boostCountDownStart: 30,
+    boostCountDown: 30,
+    boostIncr: 5,
+    onCountdownStart: 10,
+    onCountdown: 10,
+    onMultiplier: 1
+}
+
+setInterval(function(){
+    console.log(boost.boostOn);
+    if(boost.boostOn == false){
+        if(boost.boostCountDown > 0){
+            boost.boostCountDown--;
+            document.getElementById("boosterDisplay").innerHTML = "Random Booster (" + boost.boostCountDown + "s):";
+        }
+        if(boost.boostCountDown <= 0){
+            document.getElementById("boosterButton").setAttribute("class", "btn btn-warning btn-sm ms-2");
+        }
+    }else{
+        if(boost.onCountdown > 0){
+            boost.onCountdown--;
+            document.getElementById("boosterDisplay").innerHTML = "Random Booster " + boost.onMultiplier + "x <span class='text-success'>ON</span> (" + boost.onCountdown + "s):";
+        }else{
+            boost.onCountdown = boost.onCountdownStart;
+            stats.multiplier /= boost.onMultiplier;
+            boost.boostOn = false;
+        }
+    }
+}, 1000);
+
+function claimBoost(){
+    document.getElementById("boosterButton").setAttribute("class", "btn btn-warning btn-sm ms-2 disabled");
+    boost.boostOn = true;
+    // 2 - 5
+    // Rumus: Math.floor(Math.random() * (max - min + 1) ) + min;
+    boost.onMultiplier = Math.floor(Math.random() * (5 - 2 + 1)) + 2;
+    stats.multiplier *= boost.onMultiplier;
+    boost.boostCountDownStart += boost.boostIncr;
+    boost.boostCountDown = boost.boostCountDownStart;
+}
