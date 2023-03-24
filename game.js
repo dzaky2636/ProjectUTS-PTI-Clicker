@@ -187,7 +187,6 @@ setInterval(function(){
         }else{
             boost.onCountdown = boost.onCountdownStart;
             stats.multiplier = boost.originalMulValue;
-            stats.multiplier /= boost.onMultiplier;
             boost.boostOn = false;
         }
     }
