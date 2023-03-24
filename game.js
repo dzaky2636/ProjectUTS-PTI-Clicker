@@ -1,5 +1,6 @@
 window.onload = (event) => {
     redrawButtons();
+    document.getElementById("prestigeButton").innerHTML = "Cost: " + prestige.prestigeCost;
 };
 
 // Dibawah ini controllers. Ubah value untuk kostumisasi game.
@@ -7,14 +8,21 @@ const stats = {
     money: 0,   // uang mulai
     moneyup: 1, // nilai tambah saat click
     autoclicker: 0, // jumlah autoclicker awal
-    multiplier: 1 // jumlah multiplier awal
+    multiplier: 1, // jumlah multiplier awal
+    prestige: 0, // persen prestige awal
 };
+
+const prestige = {
+    prestigeIncr: 25, // persen prestige yang ditambah saat prestige dibeli
+    prestigeCost: 10000, // harga prestige awal
+    prestigeCostIncr: 10000 // harga di tambah ini saat prestige dibeli
+}
 
     // Cost =  Harga awal
     // Value = Jumlah yang ditambah ketika dibeli
     // Incr = Setelah beli, harga naik sesuai ini
 upgradeCost = [10, 20, 30];
-upgradeValue = ["Tahu", "Pizza", "Emas"];
+upgradeValue = ["Rumah", "Restoran", "Kota"];
 
 autoClickCost = [50, 200, 500];
 autoClickValue = [1, 2, 5];
@@ -24,34 +32,60 @@ mulCost = [50, 100, 250];
 mulValue = [2, 3, 4];
 mulIncr = [200, 500, 1000];
 
-// saat klik
-function clicked(){
-    stats.money += (stats.moneyup * stats.multiplier * boost.onMultiplier);
-    document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
-    clickAnimation();
-}
-
 // Lakukan ini setiap satu detik
 setInterval(function(){
+    // cek prestige
+    if(stats.money >= prestige.prestigeCost){
+        document.getElementById("prestigeButton").setAttribute("class", "btn btn-danger btn-sm ms-2");
+        document.getElementById("prestigeButton").innerHTML = "KLAIM";
+    }
     if(stats.autoclicker > 0){
         autoClicker();
     }
     checkIfLockedUnlocked();
-    document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
+    refreshMoneyDisplay();
 }, 1000);
+
+// rumus income uang
+function gainMoney(){
+    moneyNoPercentage = stats.moneyup * stats.multiplier * boost.onMultiplier;
+    stats.money += Math.round((moneyNoPercentage + ((moneyNoPercentage) * (stats.prestige/100))) * 100)/100;
+}
+
+// refresh display uang
+function refreshMoneyDisplay(){
+    document.getElementById("moneyDisplay").innerHTML = "Money: " +  Math.round(stats.money * 100)/100;
+}
+
+// saat klik
+function clicked(){
+    gainMoney();
+    refreshMoneyDisplay();
+    clickAnimation();
+}
+
+// animasi klik, digunakan pada klik dan autoclicker
+function clickAnimation(){
+    moneyNoPercentage = stats.moneyup * stats.multiplier * boost.onMultiplier;
+
+    var moneyAnimation = document.createElement("p");
+    moneyAnimation.innerHTML = "+" + (Math.round((moneyNoPercentage + ((moneyNoPercentage) * (stats.prestige/100))) * 100)/100);
+    document.getElementById("moneyAnimation").appendChild(moneyAnimation);
+    moneyAnimation.classList.add("moneyAnimation");
+}
 
 // autoclicker
 var iClicker = 0;
 function autoClicker(){
     setTimeout(function(){
         clickAnimation();
-        stats.money += (stats.moneyup * stats.multiplier * boost.onMultiplier);
+        gainMoney();
         iClicker++;
         if(iClicker < stats.autoclicker){
             autoClicker();
         }else{
             iClicker = 0;
-            document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
+            refreshMoneyDisplay();
         }
     }, 100); // kecepatan animasi
 }
@@ -86,18 +120,31 @@ function buyMultiplier(level){
     }
 }
 
-// animasi klik, digunakan pada klik dan autoclicker
-function clickAnimation(){
-    var moneyAnimation = document.createElement("p");
-    moneyAnimation.innerHTML = "+" + (stats.moneyup * stats.multiplier * boost.onMultiplier);
-    document.getElementById("moneyAnimation").appendChild(moneyAnimation);
-    moneyAnimation.classList.add("moneyAnimation");
+// beli prestige
+function buyPrestige(){
+    if(stats.money >= prestige.prestigeCost){
+        if(confirm("Jika anda menekan OK, semua progress akan direset. Tapi akan dapat +10% pendapatan permanen.")){
+            stats.money = 0;
+            stats.autoclicker = 0;
+            stats.moneyup = 1;
+            stats.multiplier = 1;
+            prestige.prestigeCost += prestige.prestigeCostIncr;
+            stats.prestige += prestige.prestigeIncr;
+            
+            redrawButtons();
+            document.getElementById("displayAutoClickerCount").innerHTML = "Auto Clicker";
+            document.getElementById("displayMultiplierCount").innerHTML = "Multiplier";
+            document.getElementById("prestigeButton").setAttribute("class", "btn btn-secondary btn-sm ms-2 disabled");
+            document.getElementById("prestigeButton").innerHTML = "Cost: " + prestige.prestigeCost;
+            document.getElementById("prestigeDisplay").innerHTML = "Prestige (+" + stats.prestige + "%): ";
+        }
+    }
 }
 
 // Render ulang button
 function redrawButtons(){
     for(i = 0; i < 3; i++){
-        document.getElementById("menuUpgrade" + (i + 1)).childNodes[1].innerHTML = "Jual " + upgradeValue[i] + " (Cost: " + upgradeCost[i] + ")";
+        document.getElementById("menuUpgrade" + (i + 1)).childNodes[1].innerHTML = "Beli " + upgradeValue[i] + " (Cost: " + upgradeCost[i] + ")";
         document.getElementById("menuMultiplier" + (i + 1)).childNodes[1].innerHTML = "Multiplier " + mulValue[i] + "x (Cost: " + mulCost[i] + ")";
         document.getElementById("menuAutoClicker" + (i + 1)).childNodes[1].innerHTML = "Pekerja L" + (i + 1) + " [+" + autoClickValue[i] +" cps] (Cost: " + autoClickCost[i] + ")";
     }
@@ -162,7 +209,7 @@ function checkIfLockedUnlocked(){
     }
 }
 
-// Random booster, setiap detik dibawah
+// Konfigurasi random booster
 const boost = {
     boostOn: false,
     boostCountDownStart: 30, // jumlah waktu saat off, default
@@ -170,11 +217,10 @@ const boost = {
     boostIncr: 5,   // increment jumlah waktu saat off
     onCountdownStart: 5, // jumlah waktu saat on, default
     onCountdown: 5, // jumlah waktu saat on, awal
-    onMultiplier: 1 // simpan multiplier random
+    onMultiplier: 1 // simpan variabel multiplier random
 }
 
 setInterval(function(){
-    console.log(boost.boostOn);
     if(boost.boostOn == false){
         if(boost.boostCountDown > 0){
             boost.boostCountDown--;
