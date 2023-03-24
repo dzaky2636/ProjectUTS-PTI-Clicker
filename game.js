@@ -48,7 +48,6 @@ function buyMultiplier(level){
     }
 }
 
-
 // Check apa bisa dibeli
 function checkIfLockedUnlocked(){
     up1 = document.getElementById("menuUpgrade1").childNodes[3];
@@ -64,46 +63,46 @@ function checkIfLockedUnlocked(){
     if(stats.money >= mulCost[0]){
         mul1.setAttribute("class", "btn btn-success col-2");
     }else if(stats.money < mulCost[0]){
-        mul1.setAttribute("class", "btn btn-success col-2 disabled");
+        mul1.setAttribute("class", "btn btn-secondary col-2");
     }
     if(stats.money >= mulCost[1]){
         mul2.setAttribute("class", "btn btn-success col-2");
     }else if(stats.money < mulCost[1]){
-        mul2.setAttribute("class", "btn btn-success col-2 disabled");
+        mul2.setAttribute("class", "btn btn-secondary col-2");
     }
     if(stats.money >= mulCost[2]){
         mul3.setAttribute("class", "btn btn-success col-2");
     }else if(stats.money < mulCost[2]){
-        mul3.setAttribute("class", "btn btn-success col-2 disabled");
+        mul3.setAttribute("class", "btn btn-secondary col-2");
     }
     if(stats.money >= autoClickCost[0]){
         auto1.setAttribute("class", "btn btn-success col-2");
     }else if(stats.money < autoClickCost[0]){
-        auto1.setAttribute("class", "btn btn-success col-2 disabled");
+        auto1.setAttribute("class", "btn btn-secondary col-2");
     }
     if(stats.money >= autoClickCost[1]){
         auto2.setAttribute("class", "btn btn-success col-2");
     }else if(stats.money < autoClickCost[1]){
-        auto2.setAttribute("class", "btn btn-success col-2 disabled");
+        auto2.setAttribute("class", "btn btn-secondary col-2");
     }
     if(stats.money >= autoClickCost[2]){
         auto3.setAttribute("class", "btn btn-success col-2");
     }else if(stats.money < autoClickCost[2]){
-        auto3.setAttribute("class", "btn btn-success col-2 disabled");
+        auto3.setAttribute("class", "btn btn-secondary col-2");
     }
     if(stats.money >= upgradeCost[0]){
         up1.setAttribute("class", "btn btn-success col-2");
     }else if(stats.money < upgradeCost[0]){
-        up1.setAttribute("class", "btn btn-success col-2 disabled");
+        up1.setAttribute("class", "btn btn-secondary col-2");
     }
     if(stats.money >= upgradeCost[1]){
         up2.setAttribute("class", "btn btn-success col-2");
     }else if(stats.money < upgradeCost[1]){
-        up2.setAttribute("class", "btn btn-success col-2 disabled");
+        up2.setAttribute("class", "btn btn-secondary col-2");
     }
     if(stats.money >= upgradeCost[2]){
         up3.setAttribute("class", "btn btn-success col-2");
     }else if(stats.money < upgradeCost[2]){
-        up3.setAttribute("class", "btn btn-success col-2 disabled");
+        up3.setAttribute("class", "btn btn-secondary col-2");
     }
 }   
