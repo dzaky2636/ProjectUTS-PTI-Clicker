@@ -1,3 +1,5 @@
+// Game Layout
+
 money = 0;
 moneyup = 1;
 
