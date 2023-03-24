@@ -2,12 +2,12 @@ window.onload = (event) => {
     redrawButtons();
 };
 
-// Controllers. Kostumisasi game.
+// Dibawah ini controllers. Ubah value untuk kostumisasi game.
 const stats = {
-    money: 0,
-    moneyup: 1,
-    autoclicker: 0,
-    multiplier: 1
+    money: 0,   // uang mulai
+    moneyup: 1, // nilai tambah saat click
+    autoclicker: 0, // jumlah autoclicker awal
+    multiplier: 1 // jumlah multiplier awal
 };
 
     // Cost =  Harga awal
@@ -24,13 +24,11 @@ mulCost = [50, 100, 250];
 mulValue = [2, 3, 4];
 mulIncr = [200, 500, 1000];
 
-// Render ulang harga
-function redrawButtons(){
-    for(i = 0; i < 3; i++){
-        document.getElementById("menuUpgrade" + (i + 1)).childNodes[1].innerHTML = "Jual " + upgradeValue[i] + " (Cost: " + upgradeCost[i] + ")";
-        document.getElementById("menuMultiplier" + (i + 1)).childNodes[1].innerHTML = "Multiplier " + mulValue[i] + "x (Cost: " + mulCost[i] + ")";
-        document.getElementById("menuAutoClicker" + (i + 1)).childNodes[1].innerHTML = "Pekerja L" + (i + 1) + " [+" + autoClickValue[i] +" cps] (Cost: " + autoClickCost[i] + ")";
-    }
+// saat klik
+function clicked(){
+    stats.money += (stats.moneyup * stats.multiplier);
+    document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
+    clickAnimation();
 }
 
 // Lakukan ini setiap satu detik
@@ -58,6 +56,7 @@ function autoClicker(){
     }, 100); // kecepatan animasi
 }
 
+// saat coba beli autoclicker
 function buyAutoClicker(level){
     if(stats.money < autoClickCost[level]){
         alert("Uang anda tidak cukup! :(");
@@ -70,6 +69,7 @@ function buyAutoClicker(level){
     }
 }
 
+// saat coba beli multiplier
 function buyMultiplier(level){
     if(stats.money < mulCost[level]){
         alert("Uang anda tidak cukup! :(");
@@ -86,12 +86,7 @@ function buyMultiplier(level){
     }
 }
 
-function clicked(){
-    stats.money += (stats.moneyup * stats.multiplier);
-    document.getElementById("moneyDisplay").innerHTML = "Money: " + stats.money;
-    clickAnimation();
-}
-
+// animasi klik, digunakan pada klik dan autoclicker
 function clickAnimation(){
     var moneyAnimation = document.createElement("p");
     moneyAnimation.innerHTML = "+" + (stats.moneyup * stats.multiplier);
@@ -99,7 +94,16 @@ function clickAnimation(){
     moneyAnimation.classList.add("moneyAnimation");
 }
 
-// Check apa bisa dibeli
+// Render ulang button
+function redrawButtons(){
+    for(i = 0; i < 3; i++){
+        document.getElementById("menuUpgrade" + (i + 1)).childNodes[1].innerHTML = "Jual " + upgradeValue[i] + " (Cost: " + upgradeCost[i] + ")";
+        document.getElementById("menuMultiplier" + (i + 1)).childNodes[1].innerHTML = "Multiplier " + mulValue[i] + "x (Cost: " + mulCost[i] + ")";
+        document.getElementById("menuAutoClicker" + (i + 1)).childNodes[1].innerHTML = "Pekerja L" + (i + 1) + " [+" + autoClickValue[i] +" cps] (Cost: " + autoClickCost[i] + ")";
+    }
+}
+
+// Set warna jika item bisa dibeli
 function checkIfLockedUnlocked(){
     up1 = document.getElementById("menuUpgrade1").childNodes[3];
     up2 = document.getElementById("menuUpgrade2").childNodes[3];
@@ -161,12 +165,12 @@ function checkIfLockedUnlocked(){
 // Random booster, setiap detik dibawah
 const boost = {
     boostOn: false,
-    boostCountDownStart: 1,
-    boostCountDown: 1,
-    boostIncr: 1,
-    onCountdownStart: 5,
-    onCountdown: 5,
-    onMultiplier: 1
+    boostCountDownStart: 30, // jumlah waktu saat off, default
+    boostCountDown: 30, // jumlah waktu saat off, awal
+    boostIncr: 5,   // increment jumlah waktu saat off
+    onCountdownStart: 5, // jumlah waktu saat on, default
+    onCountdown: 5, // jumlah waktu saat on, awal
+    onMultiplier: 1 // simpan multiplier random
 }
 
 setInterval(function(){
@@ -194,7 +198,7 @@ setInterval(function(){
 function claimBoost(){
     document.getElementById("boosterButton").setAttribute("class", "btn btn-warning btn-sm ms-2 disabled");
     boost.boostOn = true;
-    // 2 - 5
+    // dari 2x -> 5x
     // Rumus: Math.floor(Math.random() * (max - min + 1) ) + min;
     boost.onMultiplier = Math.floor(Math.random() * (5 - 2 + 1)) + 2;
     stats.multiplier *= boost.onMultiplier;
