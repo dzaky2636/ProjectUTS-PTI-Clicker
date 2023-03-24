@@ -161,8 +161,8 @@ function checkIfLockedUnlocked(){
 // Random booster, setiap detik dibawah
 const boost = {
     boostOn: false,
-    boostCountDownStart: 1,
-    boostCountDown: 1,
+    boostCountDownStart: 60,
+    boostCountDown: 60,
     boostIncr: 1,
     onCountdownStart: 5,
     onCountdown: 5,
