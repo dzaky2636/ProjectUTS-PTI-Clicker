@@ -165,12 +165,6 @@ function checkIfLockedUnlocked(){
 // Random booster, setiap detik dibawah
 const boost = {
     boostOn: false,
-    boostCountDownStart: 30, // jumlah waktu saat off, default
-    boostCountDown: 30, // jumlah waktu saat off, awal
-    boostIncr: 5,   // increment jumlah waktu saat off
-    onCountdownStart: 5, // jumlah waktu saat on, default
-    onCountdown: 5, // jumlah waktu saat on, awal
-    onMultiplier: 1 // simpan multiplier random
 }
 
 setInterval(function(){
