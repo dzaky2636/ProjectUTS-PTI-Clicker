@@ -46,7 +46,7 @@ mulIncr = [200, 500, 1000];
 // Semua dibawah ini function. Hati-hati saat diubah!
 
 // Saat page diload: 
-// Pertama reload semua button. Lalu cek cookie. Cookie menyimpan progress.
+// Pertama reload semua button. Lalu cek apa ada cookie. Cookie digunakan untuk menyimpan progress.
 window.onload = function(){    
     // Jika cookie ada
     if(document.cookie.search(/gamedata=/i) != -1){
@@ -74,6 +74,7 @@ window.onload = function(){
 
 // Saat exit dari page, simpan cookie baru.
 window.onunload = function(){
+    // Format cookie:
     // document.cookie = "gamedata= [100, 1, 1, 1, 0, false, 30, 10, 1, 10000]; SameSite=Lax;";
     document.cookie = "gamedata= ["
         + stats.money + ", " + stats.moneyup + ", " + stats.autoclicker + ", " + stats.multiplier + ", " + 
@@ -143,6 +144,11 @@ function clickAnimation(){
     moneyAnimation.innerHTML = "+" + (Math.round((moneyNoPercentage + ((moneyNoPercentage) * (stats.prestige/100))) * 100)/100);
     document.getElementById("moneyAnimation").appendChild(moneyAnimation);
     moneyAnimation.classList.add("moneyAnimation");
+
+    // remove animasi yg sudah fade ketika > 25 child
+    if(document.getElementById("moneyAnimation").childNodes.length > 25){
+        document.getElementById("moneyAnimation").removeChild(document.getElementById("moneyAnimation").firstElementChild);
+    }
 }
 
 // Saat booster di claim
@@ -159,7 +165,13 @@ function claimBoost(){
 var iClicker = 0;
 function autoClicker(){
     setTimeout(function(){
-        clickAnimation();
+        if(stats.autoclicker > 30){
+            if(iClicker % 4 == 0){
+                clickAnimation();
+            }
+        }else{
+            clickAnimation();
+        }
         gainMoney();
         iClicker++;
         if(iClicker < stats.autoclicker){
@@ -208,7 +220,8 @@ function buyPrestige(){
             stats.autoclicker = 0;
             stats.moneyup = 1;
             stats.multiplier = 1;
-
+            autoClickCost = autoClickCostStart;
+            mulCost = mulCostStart;
             // reset UI game
             redrawButtons();
 
