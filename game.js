@@ -234,6 +234,7 @@ function buyPrestige(){
 
 // Render ulang button
 function redrawButtons(){
+    document.getElementById("boosterDisplay").innerHTML = "Random Booster (" + boost.boostCountDown + "s):";
     document.getElementById("displayAutoClickerCount").innerHTML = "Auto Clicker (" + stats.autoclicker + " cps)";
     document.getElementById("displayMultiplierCount").innerHTML = "Multiplier (" + stats.multiplier + "x)";
     document.getElementById("prestigeButton").setAttribute("class", "btn btn-secondary btn-sm ms-2 disabled");
