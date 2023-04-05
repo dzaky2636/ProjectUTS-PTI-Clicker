@@ -37,7 +37,7 @@ const prestige = {
     // Value = Jumlah yang ditambah ketika dibeli
     // Incr = Setelah beli, harga naik sesuai ini
     // Name = Teks yang ditampilkan
-upgradeCost = [10000, 25000, 50000];
+upgradeCost = [15000, 50000, 100000];
 upgradeName = ["Rumah", "Restoran", "Kota"];
 upgradeMul = [2, 2, 2];
 
@@ -104,16 +104,25 @@ window.onunload = function(){
 // Lakukan function ini setiap satu detik
 setInterval(function(){
     // cek prestige
+
+    
     if(stats.upgrade >= 3){
         prestige.unlocked = true;
     }
 
-    if(prestige.unlocked){
+    if(prestige.unlocked){    
+        document.getElementById("prestigeButton").innerHTML = "Cost: " + prestige.prestigeCost;
         if(stats.money >= prestige.prestigeCost){
             document.getElementById("prestigeButton").setAttribute("class", "btn btn-danger btn-sm ms-2");
             document.getElementById("prestigeButton").innerHTML = "BELI";
+        }else{
+            document.getElementById("prestigeButton").setAttribute("class", "btn btn-secondary btn-sm ms-2 disabled");
         }
+    }else{
+        document.getElementById("prestigeButton").setAttribute("class", "btn btn-secondary btn-sm ms-2 disabled");
+        document.getElementById("prestigeButton").innerHTML = "DIKUNCI";
     }
+
     if(stats.autoclicker > 0){
         autoClicker();
     }
@@ -258,6 +267,7 @@ function buyPrestige(){
                 // reset semua stats
                 stats.money = 0;
                 stats.autoclicker = 0;
+                stats.upgrade = 0;
                 stats.moneyup = 1;
                 stats.multiplier = 1;
                 autoClickCost = autoClickCostStart;
@@ -270,6 +280,8 @@ function buyPrestige(){
                 stats.prestige += prestige.prestigeIncr;
 
                 prestige.unlocked = false;
+
+                $("#displayLokasi").text("Lokasi: Awal");
             }
         }
     }else{
@@ -295,13 +307,8 @@ function redrawButtons(){
     document.getElementById("boosterDisplay").innerHTML = "Random Booster (" + boost.boostCountDown + "s):";
     document.getElementById("displayAutoClickerCount").innerHTML = "Auto Clicker (" + stats.autoclicker + " cps)";
     document.getElementById("displayMultiplierCount").innerHTML = "Multiplier (" + stats.multiplier + "x)";
-    document.getElementById("prestigeButton").setAttribute("class", "btn btn-secondary btn-sm ms-2 disabled");
     document.getElementById("prestigeDisplay").innerHTML = "Prestige (+" + stats.prestige + "%): ";
-    if(!prestige.unlocked){
-        document.getElementById("prestigeButton").innerHTML = "DIKUNCI";
-    }else{
-        document.getElementById("prestigeButton").innerHTML = "Cost: " + prestige.prestigeCost;
-    }
+    
     for(i = 0; i < 3; i++){
         document.getElementById("menuUpgrade" + (i + 1)).childNodes[1].innerHTML = "Beli " + upgradeName[i] + " (Cost: " + upgradeCost[i] + ")";
         document.getElementById("menuMultiplier" + (i + 1)).childNodes[1].innerHTML = "Multiplier " + mulValue[i] + "x (Cost: " + mulCost[i] + ")";
@@ -401,6 +408,8 @@ function resetProgress(){
 
         checkBackgroundLevel();
         redrawButtons();
+
+        $("#displayLokasi").text("Lokasi: Awal");
     }
 }
 
@@ -411,8 +420,6 @@ function buyUpgrade(level){
         stats.money -= upgradeCost[level];
         stats.upgrade += 1;
         redrawButtons();
-
-        console.log(stats.upgrade);
 
         if(stats.upgrade > 0) stats.up1 = upgradeMul[0];
         if(stats.upgrade > 1) stats.up2 = upgradeMul[1];
