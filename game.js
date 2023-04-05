@@ -5,7 +5,13 @@ const stats = {
     moneyup: 1, // nilai tambah uang saat click, awal
     autoclicker: 0, // jumlah autoclicker awal
     multiplier: 1, // jumlah multiplier awal
+    upgrade: 0, // level upgrade awal. Maks tiga.
     prestige: 0, // persen prestige awal
+
+    // multiplier saat upgrade belum dibeli
+    up1: 1,
+    up2: 1,
+    up3: 1
 };
 
 const boost = {
@@ -21,6 +27,7 @@ const boost = {
 }
 
 const prestige = {
+    unlocked: false,
     prestigeIncr: 25, // persen prestige yang ditambah saat prestige dibeli
     prestigeCost: 100000, // harga prestige awal
     prestigeCostIncr: 100000 // harga prestige awal di tambah ini saat prestige dibeli
@@ -30,8 +37,9 @@ const prestige = {
     // Value = Jumlah yang ditambah ketika dibeli
     // Incr = Setelah beli, harga naik sesuai ini
     // Name = Teks yang ditampilkan
-upgradeCost = [10000, 40000, 100000];
+upgradeCost = [10, 20, 30];
 upgradeName = ["Rumah", "Restoran", "Kota"];
+upgradeMul = [2, 2, 2];
 
 autoClickCostStart = [50, 200, 500];
 autoClickCost = [50, 200, 500];
@@ -47,7 +55,7 @@ mulIncr = [200, 500, 1000];
 
 // Saat page diload: 
 // Pertama reload semua button. Lalu cek apa ada cookie. Cookie digunakan untuk menyimpan progress.
-window.onload = function(){    
+window.onload = function(){
     // Jika cookie ada
     if(document.cookie.search(/gamedata=/i) != -1){
         posStart = document.cookie.search(/gamedata=/i) + 9;
@@ -60,24 +68,34 @@ window.onload = function(){
         stats.moneyup = gameDataArr[1];
         stats.autoclicker = gameDataArr[2];
         stats.multiplier = gameDataArr[3];
-        stats.prestige = gameDataArr[4];
+        stats.upgrade = gameDataArr[4];
+        stats.prestige = gameDataArr[5];
 
-        boost.boostOn = gameDataArr[5];
-        boost.boostCountDown = gameDataArr[6];
-        boost.onCountdown = gameDataArr[7];
-        boost.onMultiplier = gameDataArr[8];
+        boost.boostOn = gameDataArr[6];
+        boost.boostCountDown = gameDataArr[7];
+        boost.onCountdown = gameDataArr[8];
+        boost.onMultiplier = gameDataArr[9];
 
-        prestige.prestigeCost = gameDataArr[9];
+        prestige.prestigeCost = gameDataArr[10];
     }
+
+    if(stats.upgrade > 0) stats.up1 = upgradeMul[0];
+    if(stats.upgrade > 1) stats.up2 = upgradeMul[1];
+    if(stats.upgrade > 2) stats.up3 = upgradeMul[2];
+
+    $("#menuUpgrade1").hide();
+    $("#menuUpgrade2").hide();
+    $("#menuUpgrade3").hide();
+
     redrawButtons();
 }
 
 // Saat exit dari page, simpan cookie baru.
 window.onunload = function(){
     // Format cookie:
-    // document.cookie = "gamedata= [100, 1, 1, 1, 0, false, 30, 10, 1, 10000]; SameSite=Lax;";
+    // document.cookie = "gamedata= [100, 1, 1, 1, 0, 0, false, 30, 10, 1, 10000]; SameSite=Lax;";
     document.cookie = "gamedata= ["
-        + stats.money + ", " + stats.moneyup + ", " + stats.autoclicker + ", " + stats.multiplier + ", " + 
+        + stats.money + ", " + stats.moneyup + ", " + stats.autoclicker + ", " + stats.multiplier + ", " + stats.upgrade + ", " +
         stats.prestige + ", " + boost.boostOn + ", " + boost.boostCountDown + ", " + boost.onCountdown + ", " + 
         boost.onMultiplier + ", " + prestige.prestigeCost + "]; SameSite=Lax;";
 }
@@ -85,13 +103,20 @@ window.onunload = function(){
 // Lakukan function ini setiap satu detik
 setInterval(function(){
     // cek prestige
-    if(stats.money >= prestige.prestigeCost){
-        document.getElementById("prestigeButton").setAttribute("class", "btn btn-danger btn-sm ms-2");
-        document.getElementById("prestigeButton").innerHTML = "KLAIM";
+    if(stats.upgrade >= 3){
+        prestige.unlocked = true;
+    }
+
+    if(prestige.unlocked){
+        if(stats.money >= prestige.prestigeCost){
+            document.getElementById("prestigeButton").setAttribute("class", "btn btn-danger btn-sm ms-2");
+            document.getElementById("prestigeButton").innerHTML = "BELI";
+        }
     }
     if(stats.autoclicker > 0){
         autoClicker();
     }
+    redrawButtons();
     checkIfLockedUnlocked();
     refreshMoneyDisplay();
 }, 1000);
@@ -127,8 +152,8 @@ function clicked(){
 
 // rumus income uang
 function gainMoney(){
-    moneyNoPercentage = stats.moneyup * stats.multiplier * boost.onMultiplier;
-    stats.money += Math.round((moneyNoPercentage + ((moneyNoPercentage) * (stats.prestige/100))) * 100)/100;
+    moneyNoPercentage = stats.moneyup * stats.multiplier * boost.onMultiplier * stats.up1 * stats.up2 * stats.up3;  // rumus dasar
+    stats.money += Math.round((moneyNoPercentage + ((moneyNoPercentage) * (stats.prestige/100))) * 100)/100; // rumus dengan prestige
 }
 
 // refresh display uang
@@ -138,9 +163,10 @@ function refreshMoneyDisplay(){
 
 // animasi klik, digunakan pada klik dan autoclicker
 function clickAnimation(){
-    moneyNoPercentage = stats.moneyup * stats.multiplier * boost.onMultiplier;
+    moneyNoPercentage = stats.moneyup * stats.multiplier * boost.onMultiplier * stats.up1 * stats.up2 * stats.up3;
 
     var moneyAnimation = document.createElement("p");
+    moneyAnimation.setAttribute("style", "color: black");
     moneyAnimation.innerHTML = "+" + (Math.round((moneyNoPercentage + ((moneyNoPercentage) * (stats.prestige/100))) * 100)/100);
     document.getElementById("moneyAnimation").appendChild(moneyAnimation);
     moneyAnimation.classList.add("moneyAnimation");
@@ -213,33 +239,56 @@ function buyMultiplier(level){
 
 // beli prestige
 function buyPrestige(){
-    if(stats.money >= prestige.prestigeCost){
-        if(confirm("Jika anda menekan OK, semua progress akan direset. Tapi akan dapat +" + prestige.prestigeIncr + "% pendapatan permanen.")){
-            // reset semua stats
-            stats.money = 0;
-            stats.autoclicker = 0;
-            stats.moneyup = 1;
-            stats.multiplier = 1;
-            autoClickCost = autoClickCostStart;
-            mulCost = mulCostStart;
-            // reset UI game
-            redrawButtons();
+    if(prestige.unlocked){
+        if(stats.money >= prestige.prestigeCost){
+            if(confirm("Jika anda menekan OK, semua progress akan direset. Tapi akan dapat +" + prestige.prestigeIncr + "% pendapatan permanen.")){
+                // reset semua stats
+                stats.money = 0;
+                stats.autoclicker = 0;
+                stats.moneyup = 1;
+                stats.multiplier = 1;
+                autoClickCost = autoClickCostStart;
+                mulCost = mulCostStart;
+                // reset UI game
+                redrawButtons();
+    
+                // berikan reward prestige, dan increment harga prestige
+                prestige.prestigeCost += prestige.prestigeCostIncr;
+                stats.prestige += prestige.prestigeIncr;
 
-            // berikan reward prestige, dan increment harga prestige
-            prestige.prestigeCost += prestige.prestigeCostIncr;
-            stats.prestige += prestige.prestigeIncr;
+                prestige.unlocked = false;
+            }
         }
+    }else{
+        alert('Beli Upgrade level 3 dahulu!');
     }
 }
 
 // Render ulang button
 function redrawButtons(){
+    for(i = 0; i < 4; i++){
+        if(stats.upgrade >= i){
+            if(stats.upgrade > i){
+                $("#displayLokasi").text("Lokasi: " + upgradeName[i]);
+            }
+            $("#menuUpgrade" + (i + 1) + "Locked").hide();
+            $("#menuUpgrade" + (i + 1)).show();
+            $("#menuUpgrade" + (i) + "Locked").show();
+            $("#menuUpgrade" + (i) + "Locked").children().text("SOLD OUT");
+            $("#menuUpgrade" + (i)).hide();
+        }
+    }
+
     document.getElementById("boosterDisplay").innerHTML = "Random Booster (" + boost.boostCountDown + "s):";
     document.getElementById("displayAutoClickerCount").innerHTML = "Auto Clicker (" + stats.autoclicker + " cps)";
     document.getElementById("displayMultiplierCount").innerHTML = "Multiplier (" + stats.multiplier + "x)";
     document.getElementById("prestigeButton").setAttribute("class", "btn btn-secondary btn-sm ms-2 disabled");
-    document.getElementById("prestigeButton").innerHTML = "Cost: " + prestige.prestigeCost;
     document.getElementById("prestigeDisplay").innerHTML = "Prestige (+" + stats.prestige + "%): ";
+    if(!prestige.unlocked){
+        document.getElementById("prestigeButton").innerHTML = "DIKUNCI";
+    }else{
+        document.getElementById("prestigeButton").innerHTML = "Cost: " + prestige.prestigeCost;
+    }
     for(i = 0; i < 3; i++){
         document.getElementById("menuUpgrade" + (i + 1)).childNodes[1].innerHTML = "Beli " + upgradeName[i] + " (Cost: " + upgradeCost[i] + ")";
         document.getElementById("menuMultiplier" + (i + 1)).childNodes[1].innerHTML = "Multiplier " + mulValue[i] + "x (Cost: " + mulCost[i] + ")";
@@ -309,7 +358,7 @@ function checkIfLockedUnlocked(){
 // Saat reset progress permanen
 function resetProgress(){
     if(confirm("Jika anda menekan OK, semua progress akan direset permanen.")){
-        document.cookie = "gamedata= [0, 1, 0, 1, 0, false, 30, 10, 1, 100000]; SameSite=Lax;";
+        document.cookie = "gamedata= [0, 1, 0, 1, 0, 0, false, 30, 10, 1, 100000]; SameSite=Lax;";
 
         posStart = document.cookie.search(/gamedata=/i) + 9;
         posEnd = document.cookie.indexOf("]", posStart) + 1;
@@ -321,13 +370,38 @@ function resetProgress(){
         stats.moneyup = gameDataArr[1];
         stats.autoclicker = gameDataArr[2];
         stats.multiplier = gameDataArr[3];
-        stats.prestige = gameDataArr[4];
+        stats.upgrade = gameDataArr[4];
+        stats.prestige = gameDataArr[5];
 
-        boost.boostOn = gameDataArr[5];
-        boost.boostCountDown = gameDataArr[6];
-        boost.onCountdown = gameDataArr[7];
-        boost.onMultiplier = gameDataArr[8];
+        boost.boostOn = gameDataArr[6];
+        boost.boostCountDown = gameDataArr[7];
+        boost.onCountdown = gameDataArr[8];
+        boost.onMultiplier = gameDataArr[9];
 
-        prestige.prestigeCost = gameDataArr[9];
+        prestige.unlocked = false;
+        prestige.prestigeCost = gameDataArr[10];
+
+
+        stats.up1 = 1;
+        stats.up2 = 1;
+        stats.up3 = 1;
+
+        redrawButtons();
+    }
+}
+
+function buyUpgrade(level){
+    if(stats.money < upgradeCost[level]){
+        alert("Uang anda tidak cukup! :(");
+    }else{
+        stats.money -= upgradeCost[level];
+        stats.upgrade += 1;
+        redrawButtons();
+
+        console.log(stats.upgrade);
+
+        if(stats.upgrade > 0) stats.up1 = upgradeMul[0];
+        if(stats.upgrade > 1) stats.up2 = upgradeMul[1];
+        if(stats.upgrade > 2) stats.up3 = upgradeMul[2];
     }
 }
