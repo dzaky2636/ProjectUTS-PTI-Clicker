@@ -37,7 +37,7 @@ const prestige = {
     // Value = Jumlah yang ditambah ketika dibeli
     // Incr = Setelah beli, harga naik sesuai ini
     // Name = Teks yang ditampilkan
-upgradeCost = [10, 20, 30];
+upgradeCost = [10000, 25000, 50000];
 upgradeName = ["Rumah", "Restoran", "Kota"];
 upgradeMul = [2, 2, 2];
 
@@ -87,6 +87,7 @@ window.onload = function(){
     $("#menuUpgrade2").hide();
     $("#menuUpgrade3").hide();
 
+    checkBackgroundLevel();
     redrawButtons();
 }
 
@@ -218,6 +219,12 @@ function buyAutoClicker(level){
         stats.autoclicker += autoClickValue[level];
         autoClickCost[level] += autoClickIncr[level];
         redrawButtons();
+
+        switch(level){
+            case 0: $("#displayPekerja").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+            case 1: $("#displayPekerja").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+            case 2: $("#displayPekerja").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+        }
     }
 }
 
@@ -234,6 +241,12 @@ function buyMultiplier(level){
         }
         mulCost[level] += mulIncr[level];
         redrawButtons();
+
+        switch(level){
+            case 0: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+            case 1: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+            case 2: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+        }
     }
 }
 
@@ -386,6 +399,7 @@ function resetProgress(){
         stats.up2 = 1;
         stats.up3 = 1;
 
+        checkBackgroundLevel();
         redrawButtons();
     }
 }
@@ -403,5 +417,28 @@ function buyUpgrade(level){
         if(stats.upgrade > 0) stats.up1 = upgradeMul[0];
         if(stats.upgrade > 1) stats.up2 = upgradeMul[1];
         if(stats.upgrade > 2) stats.up3 = upgradeMul[2];
+
+        checkBackgroundLevel();
+    }
+}
+
+function checkBackgroundLevel(){
+    switch(stats.upgrade){
+        case 0: 
+            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/level0.jpg'); background-size: cover;");
+            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/level0.jpg'); background-size: cover;");
+            break;
+        case 1:
+            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/level1.jpg'); background-size: cover;");
+            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/level1.jpg'); background-size: cover;");
+            break;
+        case 2:
+            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/level2.jpg'); background-size: cover;");
+            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/level2.jpg'); background-size: cover;");
+            break;
+        case 3:
+            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/level3.jpg'); background-size: cover;");
+            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/level3.jpg'); background-size: cover;");
+            break;
     }
 }
