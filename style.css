@@ -1,11 +1,23 @@
-body{
+body {
     font-family: Georgia, 'Times New Roman', Times, serif;
     /* font-size: small; */
 }
 
-.maincontainer{
+.maincontainer {
     min-height: 100vh;
     background-color: white;
+}
+
+#displayClickObject {
+    padding-right: 4vw;
+}
+
+#lokasi {
+    align-items: center;
+}
+
+#logo {
+    width: 5rem;
 }
 
 /* +1 Animation */
@@ -15,7 +27,7 @@ body{
 }
 
 #moneyAnimation {
-    position: relative; 
+    position: relative;
 }
 
 @keyframes moneyAnimation {
@@ -23,6 +35,7 @@ body{
         opacity: 1;
         top: 0;
     }
+
     100% {
         opacity: 0;
         top: -50px;
