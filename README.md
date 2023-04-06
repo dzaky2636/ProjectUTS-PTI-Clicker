@@ -3,8 +3,8 @@
 ### Idle Clicker
 - Idle Clicker merupakan Game yang menggunakan konsep clicker, dimana pengguna harus mengklik objek untuk mendapatkan poin atau uang. Pengguna kemudian dapat menggunakan uang tersebut untuk membeli upgrade agar dapat menghasilkan uang lebih banyak.
 - Bagian awalnya (Home Page) memiliki Navigation Bar untuk mengarahkan pengguna ke bagian “Main Game” dan “About Us”.
-- Uang akan bertambah disaat objek “Tahu” diklik dan Auto-Clickers akan membantu pemain 
-mendapatkan uang tanpa harus mengklik “Tahu”.
+- Uang akan bertambah disaat objek “Koin” diklik dan Auto-Clickers akan membantu pemain 
+mendapatkan uang tanpa harus mengklik “Koin”.
 - User akan mendapatkan Peringatan disaat membeli barang namun tidak memiliki uang.
 - Buatlah halaman About Us yang berisikan data diri anggota kelompok.
 - Cantumkan Referensi yang anda gunakan untuk membuat koding, gambar dan lainnya pada tampilan About Us.
