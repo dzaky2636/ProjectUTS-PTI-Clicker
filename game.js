@@ -237,19 +237,19 @@ function buyAutoClicker(level){
     }
 }
 
-// // saat coba beli multiplier
-// function buyMultiplier(level){
-//     if(stats.money < mulCost[level]){
-//         alert("Uang anda tidak cukup! :(");
-//     }else{
-//         stats.money -= mulCost[level];
-//         if(stats.multiplier == 1){
-//             stats.multiplier += mulValue[level] - 1;
-//         }else{
-//             stats.multiplier += mulValue[level];
-//         }
-//         mulCost[level] += mulIncr[level];
-//         redrawButtons();
+// saat coba beli multiplier
+function buyMultiplier(level){
+    if(stats.money < mulCost[level]){
+        alert("Uang anda tidak cukup! :(");
+    }else{
+        stats.money -= mulCost[level];
+        if(stats.multiplier == 1){
+            stats.multiplier += mulValue[level] - 1;
+        }else{
+            stats.multiplier += mulValue[level];
+        }
+        mulCost[level] += mulIncr[level];
+        redrawButtons();
 
         randItem = Math.floor(Math.random() * (12 - 1 + 1) + 1);
         switch(randItem){
