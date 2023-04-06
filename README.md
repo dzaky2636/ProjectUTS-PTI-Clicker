@@ -11,13 +11,14 @@ mendapatkan uang tanpa harus mengklik “Tahu”.
 - Penambahan efek animasi atau efek lainnya untuk meningkatkan pengalaman bermain menjadi lebih mengasikkan. Misalnya, tampilkan animasi ketika pengguna membeli upgrade atau ketika mengklik objek. Hal tersebut akan menjadi nilai tambah.
 
 ### Fitur
-1. **`Upgrade Level`** dari Level 1 sampai 2 setiap level akan mengganti bagian dalam dari toko.
+1. **`Upgrade Level`** dari Level 0 sampai 3 setiap level akan mengganti bagian luar dari toko.
 2. **`Auto Clicker`** yang dapat dibeli dan akan otomatis mengklik button setiap detik dan dapat ditambah sebanyak-banyaknya.
 3. **`Multiplier`** yang dapat dibeli dan akan menambah income setiap kali button diklik dan dapat dibeli sebanyak-banyaknya.
 4. **`Random Booster`** dapat digunakan selama 5 detik dan akan tersedia kembali setelah countdown berakhir dan akan mendapatkan booster seperti auto cliker atau multiplier secara acak (countdown pertama selama 35 detik dan akan bertambah sebanyak 5 detik setiap kali random booster digunakan).
-5. **`Prestige`** dapat mereset kembali permainan tetapi dengan penambahan income sebanyak 25% sampai 100%.
+5. **`Prestige`** akan mereset kembali permainan tetapi dengan penambahan income sebanyak +25% setiap kali dilakukan.
 6. **`Reset Button`** disediakan untuk mereset permainan dari awal karena ketika browser direstart permainan tidak akan tereset.
-7. Akan muncul peringatan jika membeli item namun uang yang dimiliki tidak cukup, dan ketika menekan tombol reset dan prestige.
+7. Fitur cookie yang akan menyimpan progress permainan secara otomatis dan akan load otomatis.
+8. Akan muncul peringatan jika membeli item namun uang yang dimiliki tidak cukup, dan ketika menekan tombol reset dan prestige.
 
 ###	Aturan Bermain
 1. Player harus mengklik button coin untuk bisa mendapatkan income.
