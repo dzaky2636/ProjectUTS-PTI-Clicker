@@ -230,34 +230,34 @@ function buyAutoClicker(level){
         redrawButtons();
 
         switch(level){
-            case 0: $("#displayPekerja").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
-            case 1: $("#displayPekerja").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
-            case 2: $("#displayPekerja").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+            case 0: $("#displayPekerja").append('<img src="assets/AVATAR/CHEF.png" class="p-1" style="width: 2rem;">'); break;
+            case 1: $("#displayPekerja").append('<img src="assets/AVATAR/WAITER BOYS.png" class="p-1" style="width: 2rem;">'); break;
+            case 2: $("#displayPekerja").append('<img src="assets/AVATAR/WAITER GIRLS.png" class="p-1" style="width: 2rem;">'); break;
         }
     }
 }
 
-// saat coba beli multiplier
-function buyMultiplier(level){
-    if(stats.money < mulCost[level]){
-        alert("Uang anda tidak cukup! :(");
-    }else{
-        stats.money -= mulCost[level];
-        if(stats.multiplier == 1){
-            stats.multiplier += mulValue[level] - 1;
-        }else{
-            stats.multiplier += mulValue[level];
-        }
-        mulCost[level] += mulIncr[level];
-        redrawButtons();
+// // saat coba beli multiplier
+// function buyMultiplier(level){
+//     if(stats.money < mulCost[level]){
+//         alert("Uang anda tidak cukup! :(");
+//     }else{
+//         stats.money -= mulCost[level];
+//         if(stats.multiplier == 1){
+//             stats.multiplier += mulValue[level] - 1;
+//         }else{
+//             stats.multiplier += mulValue[level];
+//         }
+//         mulCost[level] += mulIncr[level];
+//         redrawButtons();
 
-        switch(level){
-            case 0: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
-            case 1: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
-            case 2: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
-        }
-    }
-}
+//         switch(level){
+//             case 0: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+//             case 1: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+//             case 2: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
+//         }
+//     }
+// }
 
 // beli prestige
 function buyPrestige(){

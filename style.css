@@ -8,6 +8,18 @@ body {
     background-color: white;
 }
 
+#displayClickObject {
+    padding-right: 4vw;
+}
+
+#lokasi {
+    align-items: center;
+}
+
+#logo {
+    width: 5rem;
+}
+
 /* +1 Animation */
 * {
     margin: 0;
