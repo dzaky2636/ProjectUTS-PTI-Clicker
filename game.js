@@ -38,7 +38,7 @@ const prestige = {
     // Incr = Setelah beli, harga naik sesuai ini
     // Name = Teks yang ditampilkan
 upgradeCost = [15000, 50000, 100000];
-upgradeName = ["Rumah", "Restoran", "Kota"];
+upgradeName = ["Rumah", "Kota", "Angkasa"];
 upgradeMul = [2, 2, 2];
 
 autoClickCostStart = [50, 200, 500];
@@ -133,6 +133,7 @@ setInterval(function(){
 
 // Timer booster
 setInterval(function(){
+    console.log(boost.boostOn);
     if(boost.boostOn == false){
         if(boost.boostCountDown > 0){
             boost.boostCountDown--;
@@ -228,11 +229,10 @@ function buyAutoClicker(level){
         stats.autoclicker += autoClickValue[level];
         autoClickCost[level] += autoClickIncr[level];
         redrawButtons();
-
         switch(level){
-            case 0: $("#displayPekerja").append('<img src="assets/AVATAR/CHEF.png" class="p-1" style="width: 2rem;">'); break;
-            case 1: $("#displayPekerja").append('<img src="assets/AVATAR/WAITER BOYS.png" class="p-1" style="width: 2rem;">'); break;
-            case 2: $("#displayPekerja").append('<img src="assets/AVATAR/WAITER GIRLS.png" class="p-1" style="width: 2rem;">'); break;
+            case 0: $("#displayPekerja").append('<img src="assets/pkj3.png" class="p-1" style="height: 3em;">'); break;
+            case 1: $("#displayPekerja").append('<img src="assets/pkj2.png" class="p-1" style="height: 3em;">'); break;
+            case 2: $("#displayPekerja").append('<img src="assets/pkj1.png" class="p-1" style="height: 3em;">'); break;
         }
     }
 }
@@ -251,13 +251,23 @@ function buyAutoClicker(level){
 //         mulCost[level] += mulIncr[level];
 //         redrawButtons();
 
-//         switch(level){
-//             case 0: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
-//             case 1: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
-//             case 2: $("#displayItems").append('<img src="assets/placeholderpfp.png" class="p-1" style="height: 3em;">'); break;
-//         }
-//     }
-// }
+        randItem = Math.floor(Math.random() * (12 - 1 + 1) + 1);
+        switch(randItem){
+            case 1: $("#displayItems").append('<img src="assets/FastFood/Burgar.png" class="p-1" style="height: 3em;">'); break;
+            case 2: $("#displayItems").append('<img src="assets/FastFood/Burrito.png" class="p-1" style="height: 3em;">'); break;
+            case 3: $("#displayItems").append('<img src="assets/FastFood/Chips.png" class="p-1" style="height: 3em;">'); break;
+            case 4: $("#displayItems").append('<img src="assets/FastFood/Cola.png" class="p-1" style="height: 3em;">'); break;
+            case 5: $("#displayItems").append('<img src="assets/FastFood/Energy drink.png" class="p-1" style="height: 3em;">'); break;
+            case 6: $("#displayItems").append('<img src="assets/FastFood/French fries.png" class="p-1" style="height: 3em;">'); break;
+            case 7: $("#displayItems").append('<img src="assets/FastFood/Hot-dog.png" class="p-1" style="height: 3em;">'); break;
+            case 8: $("#displayItems").append('<img src="assets/FastFood/Long nuggets.png" class="p-1" style="height: 3em;">'); break;
+            case 9: $("#displayItems").append('<img src="assets/FastFood/Nuggets.png" class="p-1" style="height: 3em;">'); break;
+            case 10: $("#displayItems").append('<img src="assets/FastFood/Onion rings.png" class="p-1" style="height: 3em;">'); break;
+            case 11: $("#displayItems").append('<img src="assets/FastFood/Pizza 1.png" class="p-1" style="height: 3em;">'); break;
+            case 12: $("#displayItems").append('<img src="assets/FastFood/Pizza 2.png" class="p-1" style="height: 3em;">'); break;
+        }
+    }
+}
 
 // beli prestige
 function buyPrestige(){
@@ -281,7 +291,7 @@ function buyPrestige(){
 
                 prestige.unlocked = false;
 
-                $("#displayLokasi").text("Lokasi: Awal");
+                $("#displayLokasi").text("Lokasi: Desa");
             }
         }
     }else{
@@ -409,7 +419,7 @@ function resetProgress(){
         checkBackgroundLevel();
         redrawButtons();
 
-        $("#displayLokasi").text("Lokasi: Awal");
+        $("#displayLokasi").text("Lokasi: Desa");
     }
 }
 
@@ -432,20 +442,20 @@ function buyUpgrade(level){
 function checkBackgroundLevel(){
     switch(stats.upgrade){
         case 0: 
-            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/level0.jpg'); background-size: cover;");
-            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/level0.jpg'); background-size: cover;");
+            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/lvl0.avif'); background-size: cover;");
+            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/lvl0.avif'); background-size: cover;");
             break;
         case 1:
-            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/level1.jpg'); background-size: cover;");
-            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/level1.jpg'); background-size: cover;");
+            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/lvl1.avif'); background-size: cover;");
+            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/lvl1.avif'); background-size: cover;");
             break;
         case 2:
-            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/level2.jpg'); background-size: cover;");
-            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/level2.jpg'); background-size: cover;");
+            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/lvl2.avif'); background-size: cover;");
+            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/lvl2.avif'); background-size: cover;");
             break;
         case 3:
-            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/level3.jpg'); background-size: cover;");
-            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/level3.jpg'); background-size: cover;");
+            $("#bgSecondary1").attr("style", "background-image: url('assets/bg/lvl3.avif'); background-size: cover;");
+            $("#bgSecondary2").attr("style", "background-image: url('assets/bg/lvl3.avif'); background-size: cover;");
             break;
     }
 }
