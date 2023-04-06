@@ -47,5 +47,4 @@ mendapatkan uang tanpa harus mengklik “Tahu”.
 - Level 3 (https://www.freepik.com/free-vector/bar-restaurant-isometric-design_4343014.htm#query=asset%20restaurant%20indoor&position=3&from_view=search&track=robertav1_2_sidr)
 - Background Cloud (https://www.freepik.com/free-vector/bar-restaurant-isometric-design_4343014.htm#query=asset%20restaurant%20indoor&position=3&from_view=search&track=robertav1_2_sidr)
 - Background Outdor (https://www.freepik.com/free-vector/summer-city-park-with-street-lights_3297819.htm#query=outdoor%20bg&position=14&from_view=search&track=robertav1_2_sidr)
-
-
+- Interior (https://limezu.itch.io/moderninteriors)
