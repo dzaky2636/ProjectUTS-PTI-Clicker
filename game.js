@@ -133,6 +133,7 @@ setInterval(function(){
 
 // Timer booster
 setInterval(function(){
+    console.log(boost.boostOn);
     if(boost.boostOn == false){
         if(boost.boostCountDown > 0){
             boost.boostCountDown--;
