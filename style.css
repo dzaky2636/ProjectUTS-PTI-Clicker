@@ -33,3 +33,11 @@ body{
     animation: moneyAnimation 1s forwards;
     position: absolute;
 }
+
+.cardId{
+    transition: all 0.3s;
+}
+
+.cardId:hover{
+    transform: scale(1.15);
+}
